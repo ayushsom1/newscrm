@@ -5,9 +5,7 @@ from sqlalchemy import engine_from_config, pool
 
 from app.core.config import settings
 from app.core.db import Base
-
-# import all models so metadata is populated
-# (no models yet — future sprints will add them)
+from app import models  # noqa: F401  ensure model metadata is registered
 
 config = context.config
 config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)

@@ -1,26 +1,41 @@
-import { useQuery } from "@tanstack/react-query";
-import { api } from "@/lib/api";
-
-type Health = { status: string };
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { AuthProvider } from "@/lib/auth";
+import RequireAuth from "@/components/RequireAuth";
+import AppShell from "@/components/AppShell";
+import Login from "@/pages/Login";
+import Dashboard from "@/pages/Dashboard";
+import Placeholder from "@/pages/Placeholder";
 
 export default function App() {
-  const { data, isLoading, isError } = useQuery<Health>({
-    queryKey: ["health"],
-    queryFn: async () => (await api.get("/health")).data,
-  });
-
   return (
-    <div className="min-h-screen flex items-center justify-center font-sans">
-      <div className="text-center space-y-3">
-        <h1 className="text-3xl font-semibold text-ink">News CRM</h1>
-        <p className="text-sm text-ink/60">Sprint 0 — scaffolding</p>
-        <div className="text-sm">
-          API status:&nbsp;
-          {isLoading && <span className="text-ink/60">checking…</span>}
-          {isError && <span className="text-brand">unreachable</span>}
-          {data && <span className="text-green-700">{data.status}</span>}
-        </div>
-      </div>
-    </div>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route
+            element={
+              <RequireAuth>
+                <AppShell />
+              </RequireAuth>
+            }
+          >
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/advertisers" element={<Placeholder title="Advertisers" sprint="Sprint 2" />} />
+            <Route path="/classifieds" element={<Placeholder title="Classifieds" sprint="Sprint 3" />} />
+            <Route path="/subscribers" element={<Placeholder title="Subscribers" sprint="Sprint 4" />} />
+            <Route path="/complaints" element={<Placeholder title="Complaints" sprint="Sprint 5" />} />
+            <Route path="/assistant" element={<Placeholder title="Assistant" sprint="Sprint 7" />} />
+            <Route
+              path="/settings"
+              element={
+                <RequireAuth roles={["ADMIN"]}>
+                  <Placeholder title="Settings" sprint="Sprint 10" />
+                </RequireAuth>
+              }
+            />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
