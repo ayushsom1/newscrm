@@ -5,7 +5,8 @@ import { z } from "zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import type { Tender } from "@/types/dashboard";
-import { dateOnly, money } from "@/lib/format";
+import { dateOnly } from "@/lib/format";
+import { useLocale } from "@/lib/locale";
 import { useAuth } from "@/lib/auth";
 
 const schema = z.object({
@@ -32,6 +33,7 @@ interface Props {
 export default function TendersPanel({ tenders, loading }: Props) {
   const qc = useQueryClient();
   const { user } = useAuth();
+  const { money, currency } = useLocale();
   const canWrite = user?.role === "ADMIN" || user?.role === "SALES";
   const [showForm, setShowForm] = useState(false);
 
@@ -107,7 +109,7 @@ export default function TendersPanel({ tenders, loading }: Props) {
           <Field label="Deadline" error={errors.deadline?.message}>
             <input type="date" {...register("deadline")} className={input} />
           </Field>
-          <Field label="Est. value (₹)" error={errors.est_value?.message}>
+          <Field label={`Est. value (${currency})`} error={errors.est_value?.message}>
             <input
               type="number"
               step="0.01"

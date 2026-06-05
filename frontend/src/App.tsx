@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "@/lib/auth";
+import { LocaleProvider } from "@/lib/locale";
 import RequireAuth from "@/components/RequireAuth";
 import AppShell from "@/components/AppShell";
 import Login from "@/pages/Login";
@@ -22,6 +23,7 @@ import Settings from "@/pages/Settings";
 export default function App() {
   return (
     <AuthProvider>
+     <LocaleProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
@@ -101,6 +103,7 @@ export default function App() {
           </Route>
         </Routes>
       </BrowserRouter>
+     </LocaleProvider>
     </AuthProvider>
   );
 }

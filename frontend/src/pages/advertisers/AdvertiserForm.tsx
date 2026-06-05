@@ -5,6 +5,7 @@ import { z } from "zod";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
+import { useLocale } from "@/lib/locale";
 import type { Advertiser } from "@/types/advertiser";
 
 const schema = z.object({
@@ -28,6 +29,7 @@ type Vals = z.infer<typeof schema>;
 export default function AdvertiserForm() {
   const { id } = useParams();
   const isEdit = !!id;
+  const { currency } = useLocale();
   const nav = useNavigate();
   const qc = useQueryClient();
 
@@ -129,7 +131,7 @@ export default function AdvertiserForm() {
         </Field>
 
         <div className="grid grid-cols-3 gap-4">
-          <Field label="Annual value (₹)" error={errors.annual_value?.message}>
+          <Field label={`Annual value (${currency})`} error={errors.annual_value?.message}>
             <input type="number" step="0.01" {...register("annual_value")} className={input} />
           </Field>
           <Field label="Spend trend (YoY %)" error={errors.spend_trend?.message}>

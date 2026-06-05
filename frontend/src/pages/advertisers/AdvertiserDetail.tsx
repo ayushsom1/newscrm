@@ -5,7 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { api } from "@/lib/api";
 import type { AdvertiserDetail as AdvDetail } from "@/types/advertiser";
-import { dateOnly, money, pct } from "@/lib/format";
+import { dateOnly } from "@/lib/format";
+import { useLocale } from "@/lib/locale";
 import ChurnChip from "@/components/ChurnChip";
 import ProposalsPanel from "@/components/ProposalsPanel";
 import { useAuth } from "@/lib/auth";
@@ -23,6 +24,7 @@ export default function AdvertiserDetail() {
   const nav = useNavigate();
   const qc = useQueryClient();
   const { user } = useAuth();
+  const { money, pct, currency } = useLocale();
   const canWrite = user?.role === "ADMIN" || user?.role === "SALES";
   const canDelete = user?.role === "ADMIN";
 
@@ -193,7 +195,7 @@ export default function AdvertiserDetail() {
             <Field label="End">
               <input type="date" {...contractForm.register("end_date")} className={input} />
             </Field>
-            <Field label="Value (₹)">
+            <Field label={`Value (${currency})`}>
               <input type="number" step="0.01" {...contractForm.register("value")} className={input} />
             </Field>
             <Field label="Slots">
