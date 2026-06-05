@@ -27,7 +27,12 @@ services:
     environment:
       DATABASE_URL: ${DATABASE_URL:-postgresql+psycopg://crm:crm@db:5432/crm}
       SECRET_KEY: ${SECRET_KEY:-dev-secret-change-me}
-      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      OPENROUTER_MODEL: ${OPENROUTER_MODEL:-anthropic/claude-3.5-sonnet}
+      OPENROUTER_FALLBACK_MODELS: ${OPENROUTER_FALLBACK_MODELS:-}
+      OPENROUTER_BASE_URL: ${OPENROUTER_BASE_URL:-https://openrouter.ai/api/v1}
+      OPENROUTER_HTTP_REFERER: ${OPENROUTER_HTTP_REFERER:-https://news-crm.local}
+      OPENROUTER_APP_TITLE: ${OPENROUTER_APP_TITLE:-News CRM}
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3001}
     ports:
       - "8001:8000"

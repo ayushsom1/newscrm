@@ -1,10 +1,16 @@
+import uuid
 from datetime import date, timedelta
 
 
+def _unique_phone() -> str:
+    return "+91" + uuid.uuid4().hex[:10]
+
+
 def test_create_unique_phone_409(client, admin_headers) -> None:
+    phone = _unique_phone()
     payload = {
         "name": "Anita Singh",
-        "phone": "+919999999991",
+        "phone": phone,
         "area": "Patan",
         "plan": "DAILY",
     }
@@ -25,18 +31,17 @@ def test_at_risk_filter_and_signal(client, admin_headers) -> None:
         headers=admin_headers,
         json={
             "name": "Risky Reader",
-            "phone": "+919999999992",
+            "phone": _unique_phone(),
             "area": "Patan",
             "plan": "DAILY",
             "missed_payments": 2,
         },
     )
-    assert r.status_code == 201
+    assert r.status_code == 201, r.text
     sid = r.json()["id"]
     assert r.json()["renewal"]["at_risk"] is True
     assert r.json()["renewal"]["severity"] == "high"
 
-    # add an expiring subscription
     soon = date.today() + timedelta(days=3)
     r = client.post(
         f"/subscribers/{sid}/subscriptions",
@@ -55,17 +60,26 @@ def test_at_risk_filter_and_signal(client, admin_headers) -> None:
     assert r.json()["renewal"]["at_risk"] is True
     assert len(r.json()["subscriptions"]) == 1
 
-    # filter by at_risk=true should include this one
     r = client.get("/subscribers", headers=admin_headers, params={"at_risk": "true"})
     assert any(s["id"] == sid for s in r.json())
 
 
 def test_forecast_groups_by_area(client, admin_headers) -> None:
-    # ensure at least one active subscriber per area (created above)
+    # ensure at least one active subscriber exists
+    client.post(
+        "/subscribers",
+        headers=admin_headers,
+        json={
+            "name": "Forecast Seed",
+            "phone": _unique_phone(),
+            "area": "Patan",
+            "plan": "DAILY",
+        },
+    )
     r = client.get("/subscribers/forecast", headers=admin_headers)
     assert r.status_code == 200, r.text
     body = r.json()
     assert body["total_active"] >= 1
-    assert body["total_target"] >= body["total_active"]  # >= because returns_pct >= 0
+    assert body["total_target"] >= body["total_active"]
     areas = {a["area"] for a in body["areas"]}
     assert "Patan" in areas

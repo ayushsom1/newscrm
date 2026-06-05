@@ -9,7 +9,7 @@ python-jose[cryptography]==3.3.0
 passlib==1.7.4
 bcrypt==4.0.1
 python-multipart==0.0.19
-anthropic==0.40.0
+# AI: OpenRouter (OpenAI-compatible) over httpx — swap models via env, no SDK lock-in
 apscheduler==3.10.4
 httpx==0.28.1
 pytest==8.3.4

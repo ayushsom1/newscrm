@@ -5,6 +5,13 @@ from app.models.advertiser import (
     ContractStatus,
 )
 from app.models.classified import Classified, ClassifiedStatus
+from app.models.complaint import (
+    AuditLog,
+    Complaint,
+    ComplaintChannel,
+    ComplaintStatus,
+    ComplaintTriage,
+)
 from app.models.subscriber import (
     AreaReturns,
     Plan,
@@ -30,4 +37,9 @@ __all__ = [
     "SubscriptionStatus",
     "Plan",
     "AreaReturns",
+    "Complaint",
+    "ComplaintChannel",
+    "ComplaintStatus",
+    "ComplaintTriage",
+    "AuditLog",
 ]
