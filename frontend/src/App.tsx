@@ -17,6 +17,7 @@ import Forecast from "@/pages/subscribers/Forecast";
 import ComplaintsList from "@/pages/complaints/ComplaintsList";
 import ComplaintNew from "@/pages/complaints/ComplaintNew";
 import ComplaintDetail from "@/pages/complaints/ComplaintDetail";
+import Assistant from "@/pages/Assistant";
 
 export default function App() {
   return (
@@ -88,7 +89,7 @@ export default function App() {
               }
             />
             <Route path="/complaints/:id" element={<ComplaintDetail />} />
-            <Route path="/assistant" element={<Placeholder title="Assistant" sprint="Sprint 7" />} />
+            <Route path="/assistant" element={<Assistant />} />
             <Route
               path="/settings"
               element={

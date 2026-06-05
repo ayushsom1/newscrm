@@ -38,6 +38,7 @@ class ChatResult:
     content: str
     usage: dict[str, Any] | None
     raw: dict[str, Any]
+    tool_calls: list[dict[str, Any]] | None = None
 
 
 def _headers() -> dict[str, str]:
@@ -61,19 +62,52 @@ def chat(
     temperature: float = 0.2,
     response_format_json: bool = False,
 ) -> ChatResult:
-    """Synchronous chat completion call. Raises AIClientError on any failure."""
+    """Single-shot chat (system + one user message). Raises AIClientError."""
+    return chat_messages(
+        messages=[
+            {"role": "system", "content": system},
+            {"role": "user", "content": user},
+        ],
+        model=model,
+        fallback_models=fallback_models,
+        max_tokens=max_tokens,
+        temperature=temperature,
+        response_format_json=response_format_json,
+    )
+
+
+def chat_messages(
+    *,
+    messages: list[dict[str, Any]],
+    model: str | None = None,
+    fallback_models: list[str] | None = None,
+    max_tokens: int = 800,
+    temperature: float = 0.2,
+    response_format_json: bool = False,
+    tools: list[dict[str, Any]] | None = None,
+    tool_choice: str | dict[str, Any] | None = None,
+) -> ChatResult:
+    """Multi-turn chat with optional OpenAI-compatible tool calling.
+
+    Pass `messages` as a list of `{"role": ..., "content": ...}` dicts. For
+    tool replies use `{"role": "tool", "tool_call_id": ..., "content": ...}`.
+
+    Returns the assistant's reply. If the model emitted tool calls, they
+    appear on `result.tool_calls` — we DO NOT execute them; the caller decides
+    what to do (the assistant persists them as proposed actions).
+    """
     if not settings.ai_enabled:
         raise AIDisabledError("OPENROUTER_API_KEY is not set")
 
     primary = model or settings.OPENROUTER_MODEL
-    fallbacks = fallback_models if fallback_models is not None else settings.openrouter_fallback_models
-    # OpenRouter accepts a `models` array for in-platform fallback routing.
+    fallbacks = (
+        fallback_models
+        if fallback_models is not None
+        else settings.openrouter_fallback_models
+    )
     body: dict[str, Any] = {
         "model": primary,
-        "messages": [
-            {"role": "system", "content": system},
-            {"role": "user", "content": user},
-        ],
+        "messages": messages,
         "max_tokens": max_tokens,
         "temperature": temperature,
     }
@@ -81,6 +115,10 @@ def chat(
         body["models"] = [primary, *fallbacks]
     if response_format_json:
         body["response_format"] = {"type": "json_object"}
+    if tools:
+        body["tools"] = tools
+        if tool_choice is not None:
+            body["tool_choice"] = tool_choice
 
     url = f"{settings.OPENROUTER_BASE_URL.rstrip('/')}/chat/completions"
     try:
@@ -90,9 +128,7 @@ def chat(
         raise AIClientError(f"transport error: {e}") from e
 
     if r.status_code >= 400:
-        raise AIClientError(
-            f"openrouter {r.status_code}: {r.text[:300]}"
-        )
+        raise AIClientError(f"openrouter {r.status_code}: {r.text[:300]}")
 
     try:
         data = r.json()
@@ -103,6 +139,7 @@ def chat(
         choice = data["choices"][0]["message"]
         content = choice.get("content") or ""
         used_model = data.get("model") or primary
+        tool_calls = choice.get("tool_calls")
     except (KeyError, IndexError, TypeError) as e:
         raise AIClientError(f"malformed response: {data}") from e
 
@@ -111,6 +148,7 @@ def chat(
         content=content,
         usage=data.get("usage"),
         raw=data,
+        tool_calls=tool_calls,
     )
 
 
