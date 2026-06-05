@@ -11,6 +11,7 @@ import type {
   Tender,
 } from "@/types/dashboard";
 import TendersPanel from "@/components/TendersPanel";
+import JobsPanel from "@/components/JobsPanel";
 
 const SEV_LABEL: Record<Severity, string> = {
   AUTO: "AI handled",
@@ -167,6 +168,9 @@ export default function Dashboard() {
           ))}
         </ul>
       </div>
+
+      {/* Jobs */}
+      <JobsPanel />
 
       {/* Tenders */}
       <TendersPanel tenders={tendersQ.data ?? []} loading={tendersQ.isLoading} />
