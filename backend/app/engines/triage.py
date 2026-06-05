@@ -17,12 +17,20 @@ AUTO_KEYWORDS = (
     "wet paper", "damaged paper", "torn",
 )
 
+# Substring-matched against the lower-cased complaint text. Keep these
+# specific — generic words like "complaint", "rude", "bill" matched too
+# easily and short-circuited the AI on benign messages. Anything dropped
+# from here can still be classified as escalated by the AI itself; the
+# list is a guardrail of last resort, not the primary classifier.
 ESCALATE_KEYWORDS = (
-    "billing", "bill", "charge", "charged twice", "double charge",
-    "overcharge", "refund", "dispute", "wrong amount",
-    "fraud", "scam", "legal", "lawyer", "police", "court",
-    "complaint", "harass", "abuse", "abusive", "rude",
-    "threat", "threatened",
+    "billing dispute", "billing error", "wrong bill", "wrong amount",
+    "double charge", "charged twice", "charged me twice",
+    "overcharge", "over-charged", "over charged",
+    "refund", "chargeback",
+    "fraud", "scam", "cheated",
+    "lawyer", "legal action", "police", "court", "sue ",
+    "harass", "harassment",
+    "abusive", "verbal abuse", "threat", "threatened",
 )
 
 
