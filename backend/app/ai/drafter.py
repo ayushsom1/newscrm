@@ -19,6 +19,7 @@ from pydantic import BaseModel
 
 from app.ai.client import AIClientError, AIDisabledError, ChatResult, chat
 from app.models.advertiser import Advertiser, ContractStatus
+from app.services.autonomy import get_autonomy
 
 log = logging.getLogger(__name__)
 
@@ -151,8 +152,11 @@ def _engine_template(adv: Advertiser) -> tuple[str, str]:
 def draft_proposal(adv: Advertiser, churn_reasons: list[str]) -> DraftedProposal:
     """Try the AI model, fall back to a deterministic template on any failure.
 
-    High-churn accounts always get `needs_human=True`.
+    High-churn accounts always get `needs_human=True` (when the dial says so).
+    The admin "dial" can disable AI drafting entirely; we then use the
+    engine template and flag it for review.
     """
+    autonomy = get_autonomy()
     snapshot = build_snapshot(adv, churn_reasons)
     user_msg = (
         "Advertiser snapshot:\n"
@@ -160,11 +164,24 @@ def draft_proposal(adv: Advertiser, churn_reasons: list[str]) -> DraftedProposal
         + f"\n\nToday is {datetime.now(timezone.utc).date()}."
     )
 
-    needs_human = adv.churn_band == "high"
+    needs_human = (
+        adv.churn_band == "high" and autonomy.high_churn_always_needs_human
+    )
     needs_human_reason = (
         "high churn — sales lead must review before send"
         if needs_human else None
     )
+
+    if not autonomy.ai_draft_enabled:
+        subject, body = _engine_template(adv)
+        return DraftedProposal(
+            subject=subject,
+            body=body,
+            model_used="ENGINE_AUTONOMY_OFF",
+            needs_human=True,
+            needs_human_reason=needs_human_reason
+            or "AI drafting is disabled in Settings; please review",
+        )
 
     try:
         result: ChatResult = chat(

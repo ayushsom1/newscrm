@@ -4,7 +4,6 @@ import RequireAuth from "@/components/RequireAuth";
 import AppShell from "@/components/AppShell";
 import Login from "@/pages/Login";
 import Dashboard from "@/pages/Dashboard";
-import Placeholder from "@/pages/Placeholder";
 import AdvertiserList from "@/pages/advertisers/AdvertiserList";
 import AdvertiserDetail from "@/pages/advertisers/AdvertiserDetail";
 import AdvertiserForm from "@/pages/advertisers/AdvertiserForm";
@@ -18,6 +17,7 @@ import ComplaintsList from "@/pages/complaints/ComplaintsList";
 import ComplaintNew from "@/pages/complaints/ComplaintNew";
 import ComplaintDetail from "@/pages/complaints/ComplaintDetail";
 import Assistant from "@/pages/Assistant";
+import Settings from "@/pages/Settings";
 
 export default function App() {
   return (
@@ -94,7 +94,7 @@ export default function App() {
               path="/settings"
               element={
                 <RequireAuth roles={["ADMIN"]}>
-                  <Placeholder title="Settings" sprint="Sprint 10" />
+                  <Settings />
                 </RequireAuth>
               }
             />

@@ -21,6 +21,7 @@ from app.models.complaint import (
 )
 from app.models.proposal import Proposal, ProposalSource, ProposalStatus
 from app.models.job import JobRun, JobStatus
+from app.models.settings import AutonomyConfig
 from app.models.tender import GovTender, TenderStatus
 from app.models.subscriber import (
     AreaReturns,
@@ -59,6 +60,7 @@ __all__ = [
     "TenderStatus",
     "JobRun",
     "JobStatus",
+    "AutonomyConfig",
     "Conversation",
     "Message",
     "MessageRole",

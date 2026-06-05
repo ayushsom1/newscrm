@@ -16,6 +16,8 @@ from app.api.complaints import router as complaints_router
 from app.api.dashboard import router as dashboard_router
 from app.api.jobs import router as jobs_router
 from app.api.proposals import router as proposals_router
+from app.api.settings import router as settings_router
+from app.api.users import router as users_router
 from app.api.subscribers import router as subscribers_router
 from app.api.tenders import router as tenders_router
 from app.core.config import settings
@@ -54,6 +56,8 @@ app.include_router(assistant_router)
 app.include_router(tenders_router)
 app.include_router(dashboard_router)
 app.include_router(jobs_router)
+app.include_router(users_router)
+app.include_router(settings_router)
 
 app.add_middleware(
     CORSMiddleware,
