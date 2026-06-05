@@ -5,6 +5,9 @@ import AppShell from "@/components/AppShell";
 import Login from "@/pages/Login";
 import Dashboard from "@/pages/Dashboard";
 import Placeholder from "@/pages/Placeholder";
+import AdvertiserList from "@/pages/advertisers/AdvertiserList";
+import AdvertiserDetail from "@/pages/advertisers/AdvertiserDetail";
+import AdvertiserForm from "@/pages/advertisers/AdvertiserForm";
 
 export default function App() {
   return (
@@ -20,7 +23,24 @@ export default function App() {
             }
           >
             <Route path="/" element={<Dashboard />} />
-            <Route path="/advertisers" element={<Placeholder title="Advertisers" sprint="Sprint 2" />} />
+            <Route path="/advertisers" element={<AdvertiserList />} />
+            <Route
+              path="/advertisers/new"
+              element={
+                <RequireAuth roles={["ADMIN", "SALES"]}>
+                  <AdvertiserForm />
+                </RequireAuth>
+              }
+            />
+            <Route path="/advertisers/:id" element={<AdvertiserDetail />} />
+            <Route
+              path="/advertisers/:id/edit"
+              element={
+                <RequireAuth roles={["ADMIN", "SALES"]}>
+                  <AdvertiserForm />
+                </RequireAuth>
+              }
+            />
             <Route path="/classifieds" element={<Placeholder title="Classifieds" sprint="Sprint 3" />} />
             <Route path="/subscribers" element={<Placeholder title="Subscribers" sprint="Sprint 4" />} />
             <Route path="/complaints" element={<Placeholder title="Complaints" sprint="Sprint 5" />} />
