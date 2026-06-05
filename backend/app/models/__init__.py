@@ -20,6 +20,7 @@ from app.models.complaint import (
     ComplaintTriage,
 )
 from app.models.proposal import Proposal, ProposalSource, ProposalStatus
+from app.models.job import JobRun, JobStatus
 from app.models.tender import GovTender, TenderStatus
 from app.models.subscriber import (
     AreaReturns,
@@ -56,6 +57,8 @@ __all__ = [
     "ProposalStatus",
     "GovTender",
     "TenderStatus",
+    "JobRun",
+    "JobStatus",
     "Conversation",
     "Message",
     "MessageRole",
