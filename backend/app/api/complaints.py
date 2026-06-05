@@ -1,12 +1,13 @@
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from sqlalchemy import or_, select
 from sqlalchemy.orm import Session
 
 from app.ai.triage import triage_complaint
 from app.core.db import get_db
 from app.core.deps import get_current_user, require_roles
+from app.core.ratelimit import AI_LIMIT, limiter
 from app.models.complaint import (
     Complaint,
     ComplaintStatus,
@@ -91,7 +92,9 @@ def create_complaint(
 
 
 @router.post("/{complaint_id}/triage", response_model=TriageResponse)
+@limiter.limit(AI_LIMIT)
 def run_triage(
+    request: Request,
     complaint_id: int,
     db: Session = Depends(get_db),
     actor: User = Depends(require_roles(*WRITE_ROLES)),

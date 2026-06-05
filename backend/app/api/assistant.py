@@ -1,12 +1,13 @@
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
 
 from app.ai.assistant import execute_approved_action, reply
 from app.core.db import get_db
 from app.core.deps import get_current_user
+from app.core.ratelimit import AI_LIMIT, limiter
 from app.models.assistant import (
     Conversation,
     ProposedAction,
@@ -71,7 +72,9 @@ def delete_conversation(
 
 
 @router.post("/ai/chat", response_model=ChatResponse)
+@limiter.limit(AI_LIMIT)
 def chat(
+    request: Request,
     payload: ChatRequest,
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user),

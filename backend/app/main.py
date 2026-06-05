@@ -5,6 +5,8 @@ from contextlib import asynccontextmanager
 from apscheduler.schedulers.background import BackgroundScheduler
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from slowapi.errors import RateLimitExceeded
+from slowapi.middleware import SlowAPIMiddleware
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
@@ -22,6 +24,8 @@ from app.api.subscribers import router as subscribers_router
 from app.api.tenders import router as tenders_router
 from app.core.config import settings
 from app.core.db import get_db
+from app.core.logging import configure_logging
+from app.core.ratelimit import limiter
 from app.jobs.scheduler import build_scheduler
 
 log = logging.getLogger(__name__)
@@ -44,7 +48,23 @@ async def lifespan(app: FastAPI):
             scheduler.shutdown(wait=False)
 
 
+configure_logging()
+
 app = FastAPI(title="News CRM API", version="0.1.0", lifespan=lifespan)
+
+# Rate limiting — per IP. The @limiter.limit(...) decorators on individual
+# endpoints declare the per-route limit; this wires the middleware + handler.
+app.state.limiter = limiter
+app.add_middleware(SlowAPIMiddleware)
+
+
+@app.exception_handler(RateLimitExceeded)
+async def rate_limit_handler(_, exc: RateLimitExceeded):
+    from fastapi.responses import JSONResponse
+    return JSONResponse(
+        status_code=429,
+        content={"detail": f"rate limit exceeded: {exc.detail}"},
+    )
 
 app.include_router(auth_router)
 app.include_router(advertisers_router)
