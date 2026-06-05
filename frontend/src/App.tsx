@@ -14,6 +14,9 @@ import SubscribersList from "@/pages/subscribers/SubscribersList";
 import SubscriberDetail from "@/pages/subscribers/SubscriberDetail";
 import SubscriberForm from "@/pages/subscribers/SubscriberForm";
 import Forecast from "@/pages/subscribers/Forecast";
+import ComplaintsList from "@/pages/complaints/ComplaintsList";
+import ComplaintNew from "@/pages/complaints/ComplaintNew";
+import ComplaintDetail from "@/pages/complaints/ComplaintDetail";
 
 export default function App() {
   return (
@@ -75,7 +78,16 @@ export default function App() {
                 </RequireAuth>
               }
             />
-            <Route path="/complaints" element={<Placeholder title="Complaints" sprint="Sprint 5" />} />
+            <Route path="/complaints" element={<ComplaintsList />} />
+            <Route
+              path="/complaints/new"
+              element={
+                <RequireAuth roles={["ADMIN", "CIRCULATION", "SALES"]}>
+                  <ComplaintNew />
+                </RequireAuth>
+              }
+            />
+            <Route path="/complaints/:id" element={<ComplaintDetail />} />
             <Route path="/assistant" element={<Placeholder title="Assistant" sprint="Sprint 7" />} />
             <Route
               path="/settings"
