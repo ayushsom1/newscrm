@@ -8,6 +8,8 @@ import Placeholder from "@/pages/Placeholder";
 import AdvertiserList from "@/pages/advertisers/AdvertiserList";
 import AdvertiserDetail from "@/pages/advertisers/AdvertiserDetail";
 import AdvertiserForm from "@/pages/advertisers/AdvertiserForm";
+import ClassifiedsList from "@/pages/classifieds/ClassifiedsList";
+import ClassifiedNew from "@/pages/classifieds/ClassifiedNew";
 
 export default function App() {
   return (
@@ -41,7 +43,15 @@ export default function App() {
                 </RequireAuth>
               }
             />
-            <Route path="/classifieds" element={<Placeholder title="Classifieds" sprint="Sprint 3" />} />
+            <Route path="/classifieds" element={<ClassifiedsList />} />
+            <Route
+              path="/classifieds/new"
+              element={
+                <RequireAuth roles={["ADMIN", "SALES", "ACCOUNTS"]}>
+                  <ClassifiedNew />
+                </RequireAuth>
+              }
+            />
             <Route path="/subscribers" element={<Placeholder title="Subscribers" sprint="Sprint 4" />} />
             <Route path="/complaints" element={<Placeholder title="Complaints" sprint="Sprint 5" />} />
             <Route path="/assistant" element={<Placeholder title="Assistant" sprint="Sprint 7" />} />
