@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session, selectinload
 from app.ai.assistant import execute_approved_action, reply
 from app.core.db import get_db
 from app.core.deps import get_current_user
-from app.core.ratelimit import AI_LIMIT, limiter
+from app.core.ratelimit import ASSISTANT_LIMIT, _user_key, limiter
 from app.models.assistant import (
     Conversation,
     ProposedAction,
@@ -72,7 +72,7 @@ def delete_conversation(
 
 
 @router.post("/ai/chat", response_model=ChatResponse)
-@limiter.limit(AI_LIMIT)
+@limiter.limit(ASSISTANT_LIMIT, key_func=_user_key)
 def chat(
     request: Request,
     payload: ChatRequest,

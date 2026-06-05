@@ -163,16 +163,31 @@ an `AuditLog` row with `actor="AI"`.
 ## Tests
 
 ```bash
-# Backend (78+ tests)
+# Backend (86 tests)
 docker compose exec -w /app -e DISABLE_SCHEDULER=1 backend pytest -q
 
 # Frontend typecheck
 docker compose exec -w /app frontend pnpm typecheck
+
+# Playwright end-to-end (against the running dev stack on :3001)
+cd frontend
+pnpm e2e:install   # once — downloads Chromium
+pnpm e2e
 ```
 
 Coverage includes engine boundaries, AI fallback paths, RBAC matrix, idempotency
-guarantees on jobs, sensitive-keyword guardrails on triage, and end-to-end
-approval flows for proposals + proposed actions.
+guarantees on jobs, sensitive-keyword guardrails on triage, end-to-end approval
+flows for proposals + proposed actions, and browser-driven happy paths for
+auth, classified intake, advertiser → AI draft → approve → send, and complaint
+triage (billing always escalates).
+
+### CI
+
+`.github/workflows/ci.yml` runs on every PR and push to `main`:
+
+- Backend: Python 3.12 + Postgres 16 service container, `alembic upgrade head`,
+  `pytest -q`.
+- Frontend: pnpm install → typecheck → `vite build`.
 
 ---
 
@@ -238,6 +253,9 @@ docker compose exec db psql -U crm -d crm -c \
 
 ## Roadmap snapshot
 
-See [`SPRINTS.md`](SPRINTS.md) for the full plan. Sprints 0–11 are complete.
-Future work: end-to-end Playwright tests, RAG over old articles / proposals,
-SMS/WhatsApp notification provider, ingestion pipeline for government tenders.
+See [`SPRINTS.md`](SPRINTS.md) for the full plan. **All 12 sprints (0–11)
+are complete and shipped.** Future work that fell outside the original scope:
+RAG over old articles / past proposals, SMS/WhatsApp notification provider,
+ingestion pipeline for government tenders, LangGraph orchestration for the
+nightly autonomous-agent loop (deferred from Sprint 7 with a deliberate
+"add when we have a real multi-step loop" decision).

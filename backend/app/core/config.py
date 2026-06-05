@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     # OpenRouter (OpenAI-compatible). Set to swap providers/models without code changes.
     OPENROUTER_API_KEY: str = ""
     OPENROUTER_BASE_URL: str = "https://openrouter.ai/api/v1"
-    OPENROUTER_MODEL: str = "anthropic/claude-3.5-sonnet"
+    OPENROUTER_MODEL: str = "openai/gpt-4o-mini"
     OPENROUTER_FALLBACK_MODELS: str = ""  # comma-separated; tried in order on failure
     OPENROUTER_HTTP_REFERER: str = "https://news-crm.local"
     OPENROUTER_APP_TITLE: str = "News CRM"

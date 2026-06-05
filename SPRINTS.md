@@ -1,5 +1,9 @@
 # SPRINTS.md — News CRM Delivery Plan
 
+> **Status: Sprints 0–11 complete (all delivered, merged to `main`).**
+> Backend pytest: 86 passing · Migrations: 10 · Frontend typechecks clean
+> · Playwright e2e suite (3 specs) added in Sprint 11/12 polish · CI green.
+
 Agile, feature-driven delivery plan derived from `claude.md` §10 (build order) and §5 (feature spec). Each sprint = ~1 week of focused work, shippable to `main`, made of small PRs. Every sprint ends with `main` deployable.
 
 ---
