@@ -5,8 +5,9 @@ import { z } from "zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { api } from "@/lib/api";
-import { CATEGORIES, type Classified, type Quote } from "@/types/classified";
+import { useLocale } from "@/lib/locale";
 import { money } from "@/lib/format";
+import { CATEGORIES, type Classified, type Quote } from "@/types/classified";
 
 const schema = z.object({
   customer_name: z.string().min(1, "required"),
@@ -23,6 +24,7 @@ type Vals = z.infer<typeof schema>;
 export default function ClassifiedNew() {
   const nav = useNavigate();
   const qc = useQueryClient();
+  const { locale: defaultLocale } = useLocale();
   const [quote, setQuote] = useState<Quote | null>(null);
   const [quoteError, setQuoteError] = useState<string | null>(null);
 
@@ -36,7 +38,7 @@ export default function ClassifiedNew() {
     defaultValues: {
       duration_days: 1,
       category: "GENERAL",
-      locale: "IN",
+      locale: defaultLocale,
     },
   });
 

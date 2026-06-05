@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
-import { money } from "@/lib/format";
+import { useLocale } from "@/lib/locale";
 import type {
   ExceptionQueue,
   ExceptionQueueItem,
@@ -27,6 +27,7 @@ const SEV_BADGE: Record<Severity, string> = {
 
 export default function Dashboard() {
   const [tab, setTab] = useState<Severity | "ALL">("ALL");
+  const { money, locale } = useLocale();
 
   const kpisQ = useQuery<Kpis>({
     queryKey: ["dashboard", "kpis"],
@@ -83,7 +84,7 @@ export default function Dashboard() {
 
       {kpisQ.data && (
         <div className="text-sm text-ink/60">
-          Classifieds revenue (paid + published):{" "}
+          Classifieds revenue (paid + published, {locale}):{" "}
           <span className="text-ink font-medium">
             {money(kpisQ.data.revenue_running_total_inr)}
           </span>

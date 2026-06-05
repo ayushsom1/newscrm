@@ -2,13 +2,14 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
-import { money, pct } from "@/lib/format";
+import { useLocale } from "@/lib/locale";
 import ChurnChip from "@/components/ChurnChip";
 import type { Advertiser } from "@/types/advertiser";
 
 export default function AdvertiserList() {
   const [q, setQ] = useState("");
   const [band, setBand] = useState<string>("");
+  const { money, pct } = useLocale();
 
   const { data, isLoading, isError } = useQuery<Advertiser[]>({
     queryKey: ["advertisers", q, band],

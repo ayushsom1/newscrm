@@ -7,7 +7,8 @@ import { api } from "@/lib/api";
 import RenewalChip from "@/components/RenewalChip";
 import type { SubscriberDetail as Detail } from "@/types/subscriber";
 import { PLANS } from "@/types/subscriber";
-import { dateOnly, money } from "@/lib/format";
+import { dateOnly } from "@/lib/format";
+import { useLocale } from "@/lib/locale";
 import { useAuth } from "@/lib/auth";
 
 const subSchema = z.object({
@@ -23,6 +24,7 @@ export default function SubscriberDetail() {
   const nav = useNavigate();
   const qc = useQueryClient();
   const { user } = useAuth();
+  const { money, currency } = useLocale();
   const canWrite = user?.role === "ADMIN" || user?.role === "CIRCULATION";
   const canDelete = user?.role === "ADMIN";
 
@@ -201,7 +203,7 @@ export default function SubscriberDetail() {
             <Field label="Renews">
               <input type="date" {...subForm.register("renew_date")} className={input} />
             </Field>
-            <Field label="Monthly (₹)">
+            <Field label={`Monthly (${currency})`}>
               <input
                 type="number"
                 step="0.01"
