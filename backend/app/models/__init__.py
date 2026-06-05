@@ -4,6 +4,13 @@ from app.models.advertiser import (
     Contract,
     ContractStatus,
 )
+from app.models.assistant import (
+    Conversation,
+    Message,
+    MessageRole,
+    ProposedAction,
+    ProposedActionStatus,
+)
 from app.models.classified import Classified, ClassifiedStatus
 from app.models.complaint import (
     AuditLog,
@@ -46,4 +53,9 @@ __all__ = [
     "Proposal",
     "ProposalSource",
     "ProposalStatus",
+    "Conversation",
+    "Message",
+    "MessageRole",
+    "ProposedAction",
+    "ProposedActionStatus",
 ]

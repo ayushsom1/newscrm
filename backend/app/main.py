@@ -4,6 +4,7 @@ from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from app.api.advertisers import router as advertisers_router
+from app.api.assistant import router as assistant_router
 from app.api.auth import router as auth_router
 from app.api.classifieds import router as classifieds_router
 from app.api.complaints import router as complaints_router
@@ -20,6 +21,7 @@ app.include_router(classifieds_router)
 app.include_router(subscribers_router)
 app.include_router(complaints_router)
 app.include_router(proposals_router)
+app.include_router(assistant_router)
 
 app.add_middleware(
     CORSMiddleware,
