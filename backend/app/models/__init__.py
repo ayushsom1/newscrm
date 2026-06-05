@@ -4,6 +4,7 @@ from app.models.advertiser import (
     Contract,
     ContractStatus,
 )
+from app.models.classified import Classified, ClassifiedStatus
 from app.models.user import User, UserRole
 
 __all__ = [
@@ -13,4 +14,6 @@ __all__ = [
     "AdvertiserStatus",
     "Contract",
     "ContractStatus",
+    "Classified",
+    "ClassifiedStatus",
 ]
