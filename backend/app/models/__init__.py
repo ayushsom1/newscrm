@@ -12,6 +12,7 @@ from app.models.complaint import (
     ComplaintStatus,
     ComplaintTriage,
 )
+from app.models.proposal import Proposal, ProposalSource, ProposalStatus
 from app.models.subscriber import (
     AreaReturns,
     Plan,
@@ -42,4 +43,7 @@ __all__ = [
     "ComplaintStatus",
     "ComplaintTriage",
     "AuditLog",
+    "Proposal",
+    "ProposalSource",
+    "ProposalStatus",
 ]
