@@ -11,6 +11,7 @@ bcrypt==4.0.1
 python-multipart==0.0.19
 # AI: OpenRouter (OpenAI-compatible) over httpx — swap models via env, no SDK lock-in
 apscheduler==3.10.4
+slowapi==0.1.9
 httpx==0.28.1
 pytest==8.3.4
 pytest-asyncio==0.24.0

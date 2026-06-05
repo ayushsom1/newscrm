@@ -1,12 +1,13 @@
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.ai.drafter import draft_proposal
 from app.core.db import get_db
 from app.core.deps import get_current_user, require_roles
+from app.core.ratelimit import AI_LIMIT, limiter
 from app.engines.churn import score_churn
 from app.models.advertiser import Advertiser
 from app.models.proposal import Proposal, ProposalSource, ProposalStatus
@@ -48,7 +49,9 @@ def list_proposals(
     response_model=ProposalOut,
     status_code=status.HTTP_201_CREATED,
 )
+@limiter.limit(AI_LIMIT)
 def ai_draft_proposal(
+    request: Request,
     advertiser_id: int,
     db: Session = Depends(get_db),
     actor: User = Depends(require_roles(*WRITE_ROLES)),
