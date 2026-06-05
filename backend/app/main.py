@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from app.api.advertisers import router as advertisers_router
 from app.api.auth import router as auth_router
 from app.api.classifieds import router as classifieds_router
+from app.api.subscribers import router as subscribers_router
 from app.core.config import settings
 from app.core.db import get_db
 
@@ -14,6 +15,7 @@ app = FastAPI(title="News CRM API", version="0.1.0")
 app.include_router(auth_router)
 app.include_router(advertisers_router)
 app.include_router(classifieds_router)
+app.include_router(subscribers_router)
 
 app.add_middleware(
     CORSMiddleware,

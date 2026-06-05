@@ -10,6 +10,10 @@ import AdvertiserDetail from "@/pages/advertisers/AdvertiserDetail";
 import AdvertiserForm from "@/pages/advertisers/AdvertiserForm";
 import ClassifiedsList from "@/pages/classifieds/ClassifiedsList";
 import ClassifiedNew from "@/pages/classifieds/ClassifiedNew";
+import SubscribersList from "@/pages/subscribers/SubscribersList";
+import SubscriberDetail from "@/pages/subscribers/SubscriberDetail";
+import SubscriberForm from "@/pages/subscribers/SubscriberForm";
+import Forecast from "@/pages/subscribers/Forecast";
 
 export default function App() {
   return (
@@ -52,7 +56,25 @@ export default function App() {
                 </RequireAuth>
               }
             />
-            <Route path="/subscribers" element={<Placeholder title="Subscribers" sprint="Sprint 4" />} />
+            <Route path="/subscribers" element={<SubscribersList />} />
+            <Route path="/subscribers/forecast" element={<Forecast />} />
+            <Route
+              path="/subscribers/new"
+              element={
+                <RequireAuth roles={["ADMIN", "CIRCULATION"]}>
+                  <SubscriberForm />
+                </RequireAuth>
+              }
+            />
+            <Route path="/subscribers/:id" element={<SubscriberDetail />} />
+            <Route
+              path="/subscribers/:id/edit"
+              element={
+                <RequireAuth roles={["ADMIN", "CIRCULATION"]}>
+                  <SubscriberForm />
+                </RequireAuth>
+              }
+            />
             <Route path="/complaints" element={<Placeholder title="Complaints" sprint="Sprint 5" />} />
             <Route path="/assistant" element={<Placeholder title="Assistant" sprint="Sprint 7" />} />
             <Route
