@@ -7,6 +7,7 @@ import { api } from "@/lib/api";
 import type { AdvertiserDetail as AdvDetail } from "@/types/advertiser";
 import { dateOnly, money, pct } from "@/lib/format";
 import ChurnChip from "@/components/ChurnChip";
+import ProposalsPanel from "@/components/ProposalsPanel";
 import { useAuth } from "@/lib/auth";
 
 const contractSchema = z.object({
@@ -135,6 +136,8 @@ export default function AdvertiserDetail() {
           {data.churn.updated_at ? new Date(data.churn.updated_at).toLocaleString() : "—"}.
         </p>
       </Section>
+
+      <ProposalsPanel advertiserId={data.id} />
 
       <Section title={`Contracts (${data.contracts.length})`}>
         {data.contracts.length === 0 ? (
