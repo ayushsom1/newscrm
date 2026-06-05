@@ -18,6 +18,7 @@ from pydantic import BaseModel, Field
 
 from app.ai.client import AIClientError, AIDisabledError, chat_json
 from app.engines.triage import is_sensitive, triage_engine
+from app.services.autonomy import get_autonomy
 
 log = logging.getLogger(__name__)
 
@@ -56,6 +57,8 @@ Rules:
 
 def triage_complaint(text: str) -> TriageResult:
     """Triage a single complaint. Never raises — always returns a result."""
+    autonomy = get_autonomy()
+
     # First: hard sensitive-keyword check; we don't even ask the LLM about these.
     if is_sensitive(text):
         engine = triage_engine(text)
@@ -64,6 +67,16 @@ def triage_complaint(text: str) -> TriageResult:
             resolution=engine.resolution,
             source="ENGINE",
             reason=engine.reason,
+        )
+
+    # Admin dial: AI completely off -> engine fallback.
+    if not autonomy.triage_ai_enabled:
+        engine = triage_engine(text)
+        return TriageResult(
+            auto=engine.auto and autonomy.triage_auto_resolve_enabled,
+            resolution=engine.resolution,
+            source="ENGINE",
+            reason=f"autonomy_ai_off:{engine.reason}",
         )
 
     try:
@@ -93,8 +106,14 @@ def triage_complaint(text: str) -> TriageResult:
         )
 
     # Even if AI said auto=True, a sensitive-keyword check would have caught it
-    # above. As a defence-in-depth: cap auto with a final sensitive check.
-    auto = ai_out.auto and not is_sensitive(text)
+    # above. As a defence-in-depth: cap auto with the sensitive check AND the
+    # admin dial. If auto-resolve is disabled, AI suggestions still classify,
+    # but everything routes to a human.
+    auto = (
+        ai_out.auto
+        and not is_sensitive(text)
+        and autonomy.triage_auto_resolve_enabled
+    )
     return TriageResult(
         auto=auto,
         resolution=ai_out.resolution.strip(),
