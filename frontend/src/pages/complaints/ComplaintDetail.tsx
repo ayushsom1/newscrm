@@ -142,7 +142,7 @@ export default function ComplaintDetail() {
             <button
               disabled={!resolution.trim() || resolve.isPending}
               onClick={() => resolve.mutate()}
-              className="bg-ink text-white text-sm px-3 py-1.5 rounded hover:bg-ink/90 disabled:opacity-50"
+              className="bg-nav text-white text-sm px-3 py-1.5 rounded hover:bg-nav-darker disabled:opacity-50"
             >
               {resolve.isPending ? "Saving…" : "Mark resolved"}
             </button>

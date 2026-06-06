@@ -151,7 +151,7 @@ export default function AdvertiserForm() {
         <div className="flex items-center gap-2">
           <button
             disabled={isSubmitting || save.isPending}
-            className="bg-ink text-white text-sm px-4 py-1.5 rounded hover:bg-ink/90 disabled:opacity-60"
+            className="bg-nav text-white text-sm px-4 py-1.5 rounded hover:bg-nav-darker disabled:opacity-60"
           >
             {save.isPending ? "Saving…" : "Save"}
           </button>

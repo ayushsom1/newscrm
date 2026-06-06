@@ -157,7 +157,7 @@ function Toggle({
       disabled={disabled}
       onClick={() => onChange(!checked)}
       className={`relative inline-flex h-6 w-11 items-center rounded-full transition disabled:opacity-50 ${
-        checked ? "bg-ink" : "bg-zinc-300"
+        checked ? "bg-nav" : "bg-zinc-300"
       }`}
     >
       <span

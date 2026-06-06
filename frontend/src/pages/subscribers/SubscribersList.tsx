@@ -51,7 +51,7 @@ export default function SubscribersList() {
         </Link>
         <Link
           to="/subscribers/new"
-          className="bg-ink text-white text-sm px-3 py-1.5 rounded hover:bg-ink/90"
+          className="bg-nav text-white text-sm px-3 py-1.5 rounded hover:bg-nav-darker"
         >
           + New subscriber
         </Link>

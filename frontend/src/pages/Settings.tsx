@@ -21,7 +21,7 @@ export default function Settings() {
             onClick={() => setTab(id)}
             className={`text-sm px-3 py-2 -mb-px border-b-2 ${
               tab === id
-                ? "border-ink text-ink"
+                ? "border-nav text-nav"
                 : "border-transparent text-ink/60 hover:text-ink"
             }`}
           >

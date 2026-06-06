@@ -49,7 +49,7 @@ export default function ComplaintsList() {
         </select>
         <Link
           to="/complaints/new"
-          className="ml-auto bg-ink text-white text-sm px-3 py-1.5 rounded hover:bg-ink/90"
+          className="ml-auto bg-nav text-white text-sm px-3 py-1.5 rounded hover:bg-nav-darker"
         >
           + New complaint
         </Link>

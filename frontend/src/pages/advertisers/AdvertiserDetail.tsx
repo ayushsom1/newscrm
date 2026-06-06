@@ -203,7 +203,7 @@ export default function AdvertiserDetail() {
             </Field>
             <button
               disabled={addContract.isPending}
-              className="bg-ink text-white text-sm py-1.5 rounded hover:bg-ink/90 disabled:opacity-60"
+              className="bg-nav text-white text-sm py-1.5 rounded hover:bg-nav-darker disabled:opacity-60"
             >
               {addContract.isPending ? "Adding…" : "Add contract"}
             </button>

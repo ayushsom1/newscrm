@@ -146,7 +146,7 @@ export default function ClassifiedNew() {
           <div className="flex items-center gap-2">
             <button
               disabled={isSubmitting || book.isPending || !quote}
-              className="bg-ink text-white text-sm px-4 py-1.5 rounded hover:bg-ink/90 disabled:opacity-50"
+              className="bg-nav text-white text-sm px-4 py-1.5 rounded hover:bg-nav-darker disabled:opacity-50"
             >
               {book.isPending ? "Booking…" : "Book at quoted price"}
             </button>

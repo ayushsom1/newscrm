@@ -111,7 +111,7 @@ export default function Assistant() {
             setActiveId(null);
             setInput("");
           }}
-          className="bg-ink text-white text-sm py-1.5 rounded hover:bg-ink/90"
+          className="bg-nav text-white text-sm py-1.5 rounded hover:bg-nav-darker"
         >
           + New chat
         </button>
@@ -239,7 +239,7 @@ function MessageBubble({
       <div
         className={`max-w-[80%] rounded-lg px-3 py-2 text-sm whitespace-pre-wrap ${
           isUser
-            ? "bg-ink text-white"
+            ? "bg-nav text-white"
             : "bg-zinc-100 text-ink border border-zinc-200"
         }`}
       >
@@ -281,7 +281,7 @@ function ProposedActionCard({
         <button
           disabled={busy}
           onClick={onApprove}
-          className="bg-ink text-white text-xs px-3 py-1 rounded hover:bg-ink/90 disabled:opacity-60"
+          className="bg-nav text-white text-xs px-3 py-1 rounded hover:bg-nav-darker disabled:opacity-60"
         >
           Approve
         </button>

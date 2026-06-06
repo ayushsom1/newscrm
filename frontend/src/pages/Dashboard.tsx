@@ -102,7 +102,7 @@ export default function Dashboard() {
                   onClick={() => setTab(t)}
                   className={`text-xs px-2.5 py-1 rounded border ${
                     active
-                      ? "bg-ink text-white border-ink"
+                      ? "bg-nav text-white border-nav"
                       : "border-zinc-300 text-ink/70 hover:bg-zinc-50"
                   }`}
                 >

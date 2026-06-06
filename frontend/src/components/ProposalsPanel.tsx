@@ -175,7 +175,7 @@ export default function ProposalsPanel({ advertiserId }: Props) {
                           onClick={() =>
                             savePatch.mutate({ id: p.id, patch: edit })
                           }
-                          className="bg-ink text-white text-sm px-3 py-1 rounded disabled:opacity-60"
+                          className="bg-nav text-white text-sm px-3 py-1 rounded disabled:opacity-60"
                         >
                           Save edits
                         </button>
@@ -216,7 +216,7 @@ export default function ProposalsPanel({ advertiserId }: Props) {
                                   action: "approve",
                                 });
                             }}
-                            className="bg-ink text-white text-sm px-3 py-1 rounded hover:bg-ink/90"
+                            className="bg-nav text-white text-sm px-3 py-1 rounded hover:bg-nav-darker"
                           >
                             Approve
                           </button>

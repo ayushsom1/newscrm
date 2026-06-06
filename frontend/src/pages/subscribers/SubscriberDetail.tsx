@@ -213,7 +213,7 @@ export default function SubscriberDetail() {
             </Field>
             <button
               disabled={addSub.isPending}
-              className="bg-ink text-white text-sm py-1.5 rounded hover:bg-ink/90 disabled:opacity-60"
+              className="bg-nav text-white text-sm py-1.5 rounded hover:bg-nav-darker disabled:opacity-60"
             >
               {addSub.isPending ? "Adding…" : "Add"}
             </button>
