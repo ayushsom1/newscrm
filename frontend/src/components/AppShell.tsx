@@ -40,7 +40,7 @@ export default function AppShell() {
   const { collapsed, toggle } = useSidebarState();
 
   return (
-    <div className="min-h-screen flex font-sans bg-zinc-50 text-ink">
+    <div className="h-screen flex font-sans bg-zinc-50 text-ink overflow-hidden">
       <aside
         className={`shrink-0 bg-ink text-white flex flex-col border-r border-black/30 transition-[width] duration-200 ease-out ${
           collapsed ? "w-16" : "w-60"
@@ -134,8 +134,8 @@ export default function AppShell() {
         </div>
       </aside>
 
-      <div className="flex-1 flex flex-col min-w-0">
-        <header className="h-16 bg-white border-b border-zinc-200 flex items-center justify-between gap-4 px-6">
+      <div className="flex-1 flex flex-col min-w-0 min-h-0">
+        <header className="h-16 shrink-0 bg-white border-b border-zinc-200 flex items-center justify-between gap-4 px-6">
           <div className="min-w-0 flex-1">
             <Breadcrumb />
           </div>
@@ -174,7 +174,7 @@ export default function AppShell() {
           </div>
         </header>
 
-        <main className="flex-1 overflow-auto p-6">
+        <main className="flex-1 min-h-0 overflow-auto p-6">
           <Outlet />
         </main>
       </div>

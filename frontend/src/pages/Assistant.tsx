@@ -104,7 +104,7 @@ export default function Assistant() {
   );
 
   return (
-    <div className="grid grid-cols-[220px_1fr] gap-4 h-[calc(100vh-9rem)]">
+    <div className="grid grid-cols-[220px_1fr] gap-4 h-full">
       <aside className="bg-white border border-zinc-200 rounded-lg p-3 flex flex-col min-h-0">
         <button
           onClick={() => {
