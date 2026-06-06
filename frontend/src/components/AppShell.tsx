@@ -72,13 +72,13 @@ export default function AppShell() {
           type="button"
           aria-label="Close menu"
           onClick={() => setMobileOpen(false)}
-          className="fixed inset-0 z-30 bg-ink/40 md:hidden"
+          className="fixed inset-0 z-30 bg-nav/40 md:hidden"
         />
       )}
 
       <aside
         className={[
-          "bg-ink text-white flex flex-col border-r border-black/30 shrink-0",
+          "bg-nav text-white flex flex-col border-r border-black/30 shrink-0",
           "transition-[width,transform] duration-200 ease-out",
           // Mobile: fixed slide-in drawer at 240px
           "fixed inset-y-0 left-0 z-40 w-60",
@@ -258,7 +258,7 @@ export default function AppShell() {
                 </div>
               </div>
               <div
-                className="w-9 h-9 rounded-full bg-ink/5 border border-zinc-200 flex items-center justify-center text-xs font-semibold text-ink/70"
+                className="w-9 h-9 rounded-full bg-nav/5 border border-zinc-200 flex items-center justify-center text-xs font-semibold text-ink/70"
                 title={user?.name}
               >
                 {initials(user?.name)}

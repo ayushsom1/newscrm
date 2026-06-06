@@ -115,7 +115,7 @@ export default function UsersPanel() {
           </Field>
           <button
             disabled={create.isPending}
-            className="bg-ink text-white text-sm py-1.5 rounded hover:bg-ink/90 disabled:opacity-60"
+            className="bg-nav text-white text-sm py-1.5 rounded hover:bg-nav-darker disabled:opacity-60"
           >
             {create.isPending ? "Saving…" : "Create"}
           </button>
@@ -256,7 +256,7 @@ function ResetPasswordModal({
   });
 
   return (
-    <div className="fixed inset-0 bg-ink/40 flex items-center justify-center p-4 z-50">
+    <div className="fixed inset-0 bg-nav/40 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-lg p-6 w-full max-w-sm space-y-3">
         <div className="text-sm font-medium text-ink">
           Reset password for {user.email}
@@ -282,7 +282,7 @@ function ResetPasswordModal({
           <button
             disabled={pw.length < 8 || reset.isPending}
             onClick={() => reset.mutate()}
-            className="bg-ink text-white text-sm px-3 py-1.5 rounded disabled:opacity-60"
+            className="bg-nav text-white text-sm px-3 py-1.5 rounded disabled:opacity-60"
           >
             {reset.isPending ? "Saving…" : "Reset"}
           </button>

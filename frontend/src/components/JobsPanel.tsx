@@ -87,7 +87,7 @@ export default function JobsPanel() {
                   <button
                     disabled={trigger.isPending}
                     onClick={() => trigger.mutate(j.name)}
-                    className="text-xs bg-ink text-white px-2.5 py-1 rounded hover:bg-ink/90 disabled:opacity-60"
+                    className="text-xs bg-nav text-white px-2.5 py-1 rounded hover:bg-nav-darker disabled:opacity-60"
                   >
                     {trigger.isPending && trigger.variables === j.name
                       ? "Running…"

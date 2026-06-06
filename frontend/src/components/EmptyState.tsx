@@ -35,7 +35,7 @@ export default function EmptyState({
       {actionLabel && actionTo && (
         <Link
           to={actionTo}
-          className="mt-4 bg-ink text-white text-sm px-3 py-1.5 rounded hover:bg-ink/90"
+          className="mt-4 bg-nav text-white text-sm px-3 py-1.5 rounded hover:bg-nav-darker"
         >
           {actionLabel}
         </Link>
