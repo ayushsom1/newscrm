@@ -1,65 +1,191 @@
 import { NavLink, Outlet } from "react-router-dom";
+import {
+  Building2,
+  ChevronsLeft,
+  ChevronsRight,
+  LayoutDashboard,
+  LogOut,
+  MessageSquareWarning,
+  Newspaper,
+  Settings as SettingsIcon,
+  Sparkles,
+  Users,
+  type LucideIcon,
+} from "lucide-react";
+import Breadcrumb from "@/components/Breadcrumb";
 import { useAuth } from "@/lib/auth";
+import { useLocale } from "@/lib/locale";
+import { useSidebarState } from "@/lib/useSidebarState";
 
-const NAV = [
-  { to: "/", label: "Dashboard" },
-  { to: "/advertisers", label: "Advertisers" },
-  { to: "/classifieds", label: "Classifieds" },
-  { to: "/subscribers", label: "Subscribers" },
-  { to: "/complaints", label: "Complaints" },
-  { to: "/assistant", label: "Assistant" },
-  { to: "/settings", label: "Settings" },
+interface NavItem {
+  to: string;
+  label: string;
+  icon: LucideIcon;
+  end?: boolean;
+}
+
+const NAV: NavItem[] = [
+  { to: "/", label: "Dashboard", icon: LayoutDashboard, end: true },
+  { to: "/advertisers", label: "Advertisers", icon: Building2 },
+  { to: "/classifieds", label: "Classifieds", icon: Newspaper },
+  { to: "/subscribers", label: "Subscribers", icon: Users },
+  { to: "/complaints", label: "Complaints", icon: MessageSquareWarning },
+  { to: "/assistant", label: "Assistant", icon: Sparkles },
+  { to: "/settings", label: "Settings", icon: SettingsIcon },
 ];
 
 export default function AppShell() {
   const { user, logout } = useAuth();
+  const { locale, currency } = useLocale();
+  const { collapsed, toggle } = useSidebarState();
 
   return (
     <div className="min-h-screen flex font-sans bg-zinc-50 text-ink">
-      <aside className="w-60 shrink-0 bg-ink text-white flex flex-col">
-        <div className="px-5 py-4 border-b border-white/10">
-          <div className="text-base font-semibold">News CRM</div>
-          <div className="text-xs text-white/50">human-on-the-loop</div>
+      <aside
+        className={`shrink-0 bg-ink text-white flex flex-col border-r border-black/30 transition-[width] duration-200 ease-out ${
+          collapsed ? "w-16" : "w-60"
+        }`}
+        aria-label="Primary navigation"
+      >
+        {/* Brand */}
+        <div className="h-16 flex items-center border-b border-white/10 px-3">
+          {collapsed ? (
+            <div
+              className="w-9 h-9 mx-auto rounded bg-brand/20 flex items-center justify-center"
+              title="News CRM"
+            >
+              <span className="text-brand font-bold text-xs tracking-wide">
+                NC
+              </span>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2.5 px-1">
+              <div className="w-9 h-9 rounded bg-brand/20 flex items-center justify-center shrink-0">
+                <span className="text-brand font-bold text-xs tracking-wide">
+                  NC
+                </span>
+              </div>
+              <div className="min-w-0 leading-tight">
+                <div className="text-sm font-semibold text-white">News CRM</div>
+                <div className="text-[10px] text-white/50">
+                  human-on-the-loop
+                </div>
+              </div>
+            </div>
+          )}
         </div>
-        <nav className="flex-1 px-2 py-3 space-y-0.5">
+
+        {/* Nav */}
+        <nav className="flex-1 px-2 py-3 space-y-0.5 overflow-y-auto">
           {NAV.map((n) => (
             <NavLink
               key={n.to}
               to={n.to}
-              end={n.to === "/"}
+              end={n.end}
+              title={collapsed ? n.label : undefined}
               className={({ isActive }) =>
-                `block px-3 py-2 text-sm rounded ${
-                  isActive ? "bg-white/10 text-white" : "text-white/70 hover:bg-white/5"
-                }`
+                [
+                  "group relative flex items-center gap-3 rounded text-sm outline-none",
+                  "focus-visible:ring-2 focus-visible:ring-brand",
+                  "transition-colors",
+                  collapsed ? "justify-center px-0 py-2.5" : "px-3 py-2",
+                  isActive
+                    ? "bg-white/10 text-white"
+                    : "text-white/70 hover:bg-white/5 hover:text-white",
+                ].join(" ")
               }
             >
-              {n.label}
+              {({ isActive }) => (
+                <>
+                  {isActive && (
+                    <span
+                      className="absolute left-0 top-1.5 bottom-1.5 w-0.5 rounded-r bg-brand"
+                      aria-hidden="true"
+                    />
+                  )}
+                  <n.icon size={18} strokeWidth={1.75} className="shrink-0" />
+                  {!collapsed && (
+                    <span className="truncate">{n.label}</span>
+                  )}
+                </>
+              )}
             </NavLink>
           ))}
         </nav>
-        <div className="px-5 py-3 text-xs text-white/40 border-t border-white/10">v0.1.0</div>
+
+        {/* Collapse toggle + version */}
+        <div className="border-t border-white/10 p-2">
+          <button
+            type="button"
+            onClick={toggle}
+            title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+            aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+            className={`w-full flex items-center py-1.5 rounded text-xs text-white/50 hover:bg-white/5 hover:text-white focus-visible:ring-2 focus-visible:ring-brand outline-none transition-colors ${
+              collapsed ? "justify-center" : "justify-between px-2"
+            }`}
+          >
+            {!collapsed && <span>v0.1.0</span>}
+            {collapsed ? (
+              <ChevronsRight size={16} />
+            ) : (
+              <ChevronsLeft size={16} />
+            )}
+          </button>
+        </div>
       </aside>
 
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="h-14 bg-white border-b border-zinc-200 flex items-center justify-between px-6">
-          <div className="text-sm text-ink/60">Sprint 1 — Auth shell</div>
-          <div className="flex items-center gap-3 text-sm">
-            <div className="text-ink">
-              {user?.name}{" "}
-              <span className="text-ink/50">· {user?.role}</span>
-            </div>
-            <button
-              onClick={logout}
-              className="text-ink/70 hover:text-brand text-xs underline-offset-2 hover:underline"
+        <header className="h-16 bg-white border-b border-zinc-200 flex items-center justify-between gap-4 px-6">
+          <div className="min-w-0 flex-1">
+            <Breadcrumb />
+          </div>
+
+          <div className="flex items-center gap-4 shrink-0">
+            <div
+              className="hidden sm:block text-[10px] uppercase tracking-wider font-medium px-2 py-1 rounded border border-zinc-200 text-ink/60"
+              title={`Locale ${locale} — currency ${currency}`}
             >
-              Sign out
-            </button>
+              {locale} · {currency}
+            </div>
+
+            <div className="flex items-center gap-3">
+              <div className="text-sm leading-tight text-right hidden md:block">
+                <div className="text-ink font-medium">{user?.name}</div>
+                <div className="text-[10px] uppercase tracking-wide text-ink/50">
+                  {user?.role}
+                </div>
+              </div>
+              <div
+                className="w-9 h-9 rounded-full bg-ink/5 border border-zinc-200 flex items-center justify-center text-xs font-semibold text-ink/70"
+                title={user?.name}
+              >
+                {initials(user?.name)}
+              </div>
+              <button
+                type="button"
+                onClick={logout}
+                title="Sign out"
+                aria-label="Sign out"
+                className="p-2 rounded text-ink/60 hover:text-brand hover:bg-zinc-50 focus-visible:ring-2 focus-visible:ring-brand outline-none transition-colors"
+              >
+                <LogOut size={16} />
+              </button>
+            </div>
           </div>
         </header>
+
         <main className="flex-1 overflow-auto p-6">
           <Outlet />
         </main>
       </div>
     </div>
   );
+}
+
+function initials(name: string | undefined): string {
+  if (!name) return "?";
+  const parts = name.trim().split(/\s+/);
+  const first = parts[0]?.[0] ?? "";
+  const last = parts.length > 1 ? parts[parts.length - 1]?.[0] ?? "" : "";
+  return (first + last).toUpperCase() || "?";
 }
