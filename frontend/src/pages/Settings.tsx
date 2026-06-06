@@ -9,14 +9,6 @@ export default function Settings() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-xl font-semibold text-ink">Settings</h1>
-        <p className="text-sm text-ink/60">
-          User management and the AI autonomy dial — what the assistant may do
-          by itself vs. what needs a human to approve.
-        </p>
-      </div>
-
       <div className="flex gap-1 border-b border-zinc-200">
         {(
           [

@@ -14,13 +14,6 @@ export default function Forecast() {
 
   return (
     <div className="space-y-6 max-w-4xl">
-      <div>
-        <h1 className="text-xl font-semibold text-ink">Print-run forecast</h1>
-        <p className="text-sm text-ink/60">
-          Engine-computed from active subs × historical returns per area.
-        </p>
-      </div>
-
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Card label="Active subscribers" value={data.total_active} />
         <Card label="Target copies / day" value={data.total_target} accent />

@@ -50,13 +50,6 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-xl font-semibold text-ink">Dashboard</h1>
-        <p className="text-sm text-ink/60">
-          Live KPIs and the exception queue — the human-on-the-loop surface.
-        </p>
-      </div>
-
       {/* KPIs */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         {kpisQ.isLoading &&

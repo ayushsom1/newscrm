@@ -33,31 +33,24 @@ export default function ComplaintsList() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-end justify-between">
-        <div>
-          <h1 className="text-xl font-semibold text-ink">Complaints</h1>
-          <p className="text-sm text-ink/60">
-            AI triage routes routine ops; billing/disputes are always escalated.
-          </p>
-        </div>
+      <div className="flex items-center gap-2">
+        <select
+          value={triageFilter}
+          onChange={(e) => setTriageFilter(e.target.value as ComplaintTriage | "")}
+          className="border border-zinc-300 rounded px-3 py-1.5 text-sm"
+        >
+          <option value="">All triage states</option>
+          <option value="PENDING">Pending triage</option>
+          <option value="AUTO">Auto-resolved</option>
+          <option value="ESCALATED">Escalated</option>
+        </select>
         <Link
           to="/complaints/new"
-          className="bg-ink text-white text-sm px-3 py-1.5 rounded hover:bg-ink/90"
+          className="ml-auto bg-ink text-white text-sm px-3 py-1.5 rounded hover:bg-ink/90"
         >
           + New complaint
         </Link>
       </div>
-
-      <select
-        value={triageFilter}
-        onChange={(e) => setTriageFilter(e.target.value as ComplaintTriage | "")}
-        className="border border-zinc-300 rounded px-3 py-1.5 text-sm"
-      >
-        <option value="">All triage states</option>
-        <option value="PENDING">Pending triage</option>
-        <option value="AUTO">Auto-resolved</option>
-        <option value="ESCALATED">Escalated</option>
-      </select>
 
       <div className="bg-white border border-zinc-200 rounded-lg overflow-hidden">
         <table className="w-full text-sm">

@@ -24,35 +24,12 @@ export default function SubscribersList() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-end justify-between">
-        <div>
-          <h1 className="text-xl font-semibold text-ink">Subscribers</h1>
-          <p className="text-sm text-ink/60">
-            At-risk flag is computed by the renewal engine.
-          </p>
-        </div>
-        <div className="flex gap-2">
-          <Link
-            to="/subscribers/forecast"
-            className="text-sm border border-zinc-300 px-3 py-1.5 rounded hover:bg-zinc-50"
-          >
-            Print-run forecast
-          </Link>
-          <Link
-            to="/subscribers/new"
-            className="bg-ink text-white text-sm px-3 py-1.5 rounded hover:bg-ink/90"
-          >
-            + New subscriber
-          </Link>
-        </div>
-      </div>
-
       <div className="flex items-center gap-2">
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Search name or phone…"
-          className="flex-1 max-w-sm border border-zinc-300 rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ai/40"
+          className="max-w-sm flex-1 border border-zinc-300 rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ai/40"
         />
         <select
           value={atRisk}
@@ -63,6 +40,18 @@ export default function SubscribersList() {
           <option value="true">At-risk only</option>
           <option value="false">Healthy only</option>
         </select>
+        <Link
+          to="/subscribers/forecast"
+          className="ml-auto text-sm border border-zinc-300 px-3 py-1.5 rounded hover:bg-zinc-50"
+        >
+          Print-run forecast
+        </Link>
+        <Link
+          to="/subscribers/new"
+          className="bg-ink text-white text-sm px-3 py-1.5 rounded hover:bg-ink/90"
+        >
+          + New subscriber
+        </Link>
       </div>
 
       <div className="bg-white border border-zinc-200 rounded-lg overflow-hidden">

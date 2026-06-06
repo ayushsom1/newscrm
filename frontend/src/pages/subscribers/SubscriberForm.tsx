@@ -84,9 +84,6 @@ export default function SubscriberForm() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold text-ink mb-4">
-        {isEdit ? "Edit subscriber" : "New subscriber"}
-      </h1>
       <form
         onSubmit={handleSubmit((v) => save.mutate(v))}
         className="bg-white border border-zinc-200 rounded-lg p-6 space-y-4"
