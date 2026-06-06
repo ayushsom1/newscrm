@@ -4,6 +4,9 @@ import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { useLocale } from "@/lib/locale";
 import ChurnChip from "@/components/ChurnChip";
+import { SkeletonRows } from "@/components/Skeleton";
+import EmptyState from "@/components/EmptyState";
+import { Building2 } from "lucide-react";
 import type { Advertiser } from "@/types/advertiser";
 
 export default function AdvertiserList() {
@@ -48,8 +51,8 @@ export default function AdvertiserList() {
         </Link>
       </div>
 
-      <div className="bg-white border border-zinc-200 rounded-lg overflow-hidden">
-        <table className="w-full text-sm">
+      <div className="bg-white border border-zinc-200 rounded-lg overflow-x-auto">
+        <table className="w-full text-sm min-w-[720px]">
           <thead className="bg-zinc-50 text-ink/60 text-xs uppercase">
             <tr>
               <th className="text-left px-4 py-2 font-medium">Name</th>
@@ -63,11 +66,11 @@ export default function AdvertiserList() {
           </thead>
           <tbody>
             {isLoading && (
-              <tr>
-                <td colSpan={7} className="px-4 py-6 text-center text-ink/50">
-                  Loading…
-                </td>
-              </tr>
+              <SkeletonRows
+                rows={6}
+                cols={7}
+                align={["left", "left", "right", "right", "right", "left", "left"]}
+              />
             )}
             {isError && (
               <tr>
@@ -76,10 +79,17 @@ export default function AdvertiserList() {
                 </td>
               </tr>
             )}
-            {data?.length === 0 && (
+            {!isLoading && data?.length === 0 && (
               <tr>
-                <td colSpan={7} className="px-4 py-6 text-center text-ink/50">
-                  No advertisers yet.
+                <td colSpan={7}>
+                  <EmptyState
+                    inline
+                    icon={Building2}
+                    title="No advertisers yet"
+                    description="Start tracking accounts to see churn risk and renewal opportunities here."
+                    actionLabel="Create your first advertiser"
+                    actionTo="/advertisers/new"
+                  />
                 </td>
               </tr>
             )}

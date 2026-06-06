@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { dateOnly } from "@/lib/format";
 import TriageBadge from "@/components/TriageBadge";
+import { showSuccess } from "@/lib/toast";
 import type { Complaint, TriageResponse } from "@/types/complaint";
 import { useAuth } from "@/lib/auth";
 
@@ -24,9 +25,14 @@ export default function ComplaintDetail() {
   const triage = useMutation({
     mutationFn: async () =>
       (await api.post<TriageResponse>(`/complaints/${id}/triage`)).data,
-    onSuccess: async () => {
+    onSuccess: async (r) => {
       await qc.invalidateQueries({ queryKey: ["complaint", id] });
       await qc.invalidateQueries({ queryKey: ["complaints"] });
+      showSuccess(
+        r.auto
+          ? `Auto-resolved (${r.source})`
+          : `Escalated to a human (${r.source})`,
+      );
     },
   });
 
@@ -37,6 +43,7 @@ export default function ComplaintDetail() {
       await qc.invalidateQueries({ queryKey: ["complaint", id] });
       await qc.invalidateQueries({ queryKey: ["complaints"] });
       setResolution("");
+      showSuccess("Complaint resolved");
     },
   });
 

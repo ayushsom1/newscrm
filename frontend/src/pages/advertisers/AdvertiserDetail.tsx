@@ -187,7 +187,7 @@ export default function AdvertiserDetail() {
         {canWrite && (
           <form
             onSubmit={contractForm.handleSubmit((v) => addContract.mutate(v))}
-            className="mt-4 grid grid-cols-5 gap-2 items-end"
+            className="mt-4 grid grid-cols-2 sm:grid-cols-5 gap-2 items-end"
           >
             <Field label="Start">
               <input type="date" {...contractForm.register("start_date")} className={input} />

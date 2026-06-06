@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { api } from "@/lib/api";
 import { useLocale } from "@/lib/locale";
 import { money } from "@/lib/format";
+import { showSuccess } from "@/lib/toast";
 import { CATEGORIES, type Classified, type Quote } from "@/types/classified";
 
 const schema = z.object({
@@ -86,6 +87,7 @@ export default function ClassifiedNew() {
     },
     onSuccess: async () => {
       await qc.invalidateQueries({ queryKey: ["classifieds"] });
+      showSuccess("Classified booked at quoted price");
       nav("/classifieds");
     },
   });

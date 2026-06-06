@@ -186,7 +186,7 @@ export default function SubscriberDetail() {
         {canWrite && (
           <form
             onSubmit={subForm.handleSubmit((v) => addSub.mutate(v))}
-            className="mt-4 grid grid-cols-5 gap-2 items-end"
+            className="mt-4 grid grid-cols-2 sm:grid-cols-5 gap-2 items-end"
           >
             <Field label="Plan">
               <select {...subForm.register("plan")} className={input}>

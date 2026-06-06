@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
+import { showSuccess } from "@/lib/toast";
 import type { Autonomy } from "@/types/settings";
 
 interface ToggleSpec {
@@ -69,6 +70,7 @@ export default function AutonomyPanel() {
       (await api.patch<Autonomy>("/settings/autonomy", body)).data,
     onSuccess: async () => {
       await qc.invalidateQueries({ queryKey: ["autonomy"] });
+      showSuccess("Settings updated");
     },
   });
 

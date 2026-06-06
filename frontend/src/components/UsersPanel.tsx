@@ -8,6 +8,7 @@ import { useAuth } from "@/lib/auth";
 import type { UserDetail } from "@/types/settings";
 import { ROLES } from "@/types/settings";
 import { dateOnly } from "@/lib/format";
+import { showSuccess } from "@/lib/toast";
 
 const createSchema = z.object({
   name: z.string().min(1),
@@ -36,26 +37,29 @@ export default function UsersPanel() {
   const create = useMutation({
     mutationFn: async (vals: CreateVals) =>
       (await api.post<UserDetail>("/users", vals)).data,
-    onSuccess: async () => {
+    onSuccess: async (u) => {
       await qc.invalidateQueries({ queryKey: ["users"] });
       createForm.reset();
       setShowCreate(false);
+      showSuccess(`Created ${u.email}`);
     },
   });
 
   const updateRole = useMutation({
     mutationFn: async ({ id, role }: { id: number; role: string }) =>
       (await api.patch<UserDetail>(`/users/${id}`, { role })).data,
-    onSuccess: async () => {
+    onSuccess: async (u) => {
       await qc.invalidateQueries({ queryKey: ["users"] });
+      showSuccess(`Role updated to ${u.role}`);
     },
   });
 
   const toggleActive = useMutation({
     mutationFn: async ({ id, is_active }: { id: number; is_active: boolean }) =>
       (await api.patch<UserDetail>(`/users/${id}`, { is_active })).data,
-    onSuccess: async () => {
+    onSuccess: async (u) => {
       await qc.invalidateQueries({ queryKey: ["users"] });
+      showSuccess(u.is_active ? "User activated" : "User deactivated");
     },
   });
 
@@ -63,6 +67,7 @@ export default function UsersPanel() {
     mutationFn: async (id: number) => await api.delete(`/users/${id}`),
     onSuccess: async () => {
       await qc.invalidateQueries({ queryKey: ["users"] });
+      showSuccess("User deleted");
     },
   });
 
@@ -244,7 +249,10 @@ function ResetPasswordModal({
   const reset = useMutation({
     mutationFn: async () =>
       await api.post(`/users/${user.id}/reset-password`, { new_password: pw }),
-    onSuccess: onClose,
+    onSuccess: () => {
+      showSuccess(`Password reset for ${user.email}`);
+      onClose();
+    },
   });
 
   return (

@@ -4,6 +4,7 @@ import { z } from "zod";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
+import { showSuccess } from "@/lib/toast";
 import type { Complaint } from "@/types/complaint";
 
 const schema = z.object({
@@ -38,6 +39,7 @@ export default function ComplaintNew() {
     },
     onSuccess: async (c) => {
       await qc.invalidateQueries({ queryKey: ["complaints"] });
+      showSuccess("Complaint logged");
       nav(`/complaints/${c.id}`);
     },
   });

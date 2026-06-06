@@ -7,6 +7,7 @@ import { api } from "@/lib/api";
 import type { Tender } from "@/types/dashboard";
 import { dateOnly } from "@/lib/format";
 import { useLocale } from "@/lib/locale";
+import { showSuccess } from "@/lib/toast";
 import { useAuth } from "@/lib/auth";
 
 const schema = z.object({
@@ -57,6 +58,7 @@ export default function TendersPanel({ tenders, loading }: Props) {
       await qc.invalidateQueries({ queryKey: ["dashboard", "queue"] });
       reset();
       setShowForm(false);
+      showSuccess("Tender added");
     },
   });
 
@@ -68,9 +70,10 @@ export default function TendersPanel({ tenders, loading }: Props) {
       id: number;
       status: Tender["status"];
     }) => (await api.patch(`/tenders/${id}`, { status })).data,
-    onSuccess: async () => {
+    onSuccess: async (_d, { status }) => {
       await qc.invalidateQueries({ queryKey: ["tenders"] });
       await qc.invalidateQueries({ queryKey: ["dashboard", "queue"] });
+      showSuccess(`Tender ${status.toLowerCase()}`);
     },
   });
 

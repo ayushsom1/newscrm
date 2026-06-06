@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import type { JobList, JobRun } from "@/types/job";
 import { useAuth } from "@/lib/auth";
+import { showSuccess } from "@/lib/toast";
 
 const STATUS_STYLES: Record<JobRun["status"], string> = {
   SUCCESS: "bg-green-50 text-green-800 border-green-200",
@@ -28,11 +29,14 @@ export default function JobsPanel() {
   const trigger = useMutation({
     mutationFn: async (name: string) =>
       (await api.post<JobRun>(`/jobs/${name}/run`)).data,
-    onSuccess: async () => {
+    onSuccess: async (run) => {
       await qc.invalidateQueries({ queryKey: ["jobs"] });
       await qc.invalidateQueries({ queryKey: ["dashboard", "queue"] });
       await qc.invalidateQueries({ queryKey: ["dashboard", "kpis"] });
       await qc.invalidateQueries({ queryKey: ["advertisers"] });
+      showSuccess(
+        `Job ${run.job_name} ran — ${run.items_processed} processed, ${run.notifications_sent} sent`,
+      );
     },
   });
 

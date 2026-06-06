@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { useLocale } from "@/lib/locale";
+import { showSuccess } from "@/lib/toast";
 import type { Advertiser } from "@/types/advertiser";
 
 const schema = z.object({
@@ -90,6 +91,7 @@ export default function AdvertiserForm() {
     onSuccess: async (a) => {
       await qc.invalidateQueries({ queryKey: ["advertisers"] });
       await qc.invalidateQueries({ queryKey: ["advertiser", String(a.id)] });
+      showSuccess(isEdit ? `Updated ${a.name}` : `Created ${a.name}`);
       nav(`/advertisers/${a.id}`);
     },
   });
