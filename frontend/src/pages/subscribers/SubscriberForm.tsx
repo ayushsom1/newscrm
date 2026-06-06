@@ -5,6 +5,7 @@ import { z } from "zod";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
+import { showSuccess } from "@/lib/toast";
 import type { Subscriber } from "@/types/subscriber";
 import { PLANS } from "@/types/subscriber";
 
@@ -73,6 +74,7 @@ export default function SubscriberForm() {
     onSuccess: async (s) => {
       await qc.invalidateQueries({ queryKey: ["subscribers"] });
       await qc.invalidateQueries({ queryKey: ["subscriber", String(s.id)] });
+      showSuccess(isEdit ? `Updated ${s.name}` : `Created ${s.name}`);
       nav(`/subscribers/${s.id}`);
     },
   });

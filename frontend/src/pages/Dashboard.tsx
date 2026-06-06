@@ -12,6 +12,7 @@ import type {
 } from "@/types/dashboard";
 import TendersPanel from "@/components/TendersPanel";
 import JobsPanel from "@/components/JobsPanel";
+import { SkeletonCard } from "@/components/Skeleton";
 
 const SEV_LABEL: Record<Severity, string> = {
   AUTO: "AI handled",
@@ -53,12 +54,7 @@ export default function Dashboard() {
       {/* KPIs */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         {kpisQ.isLoading &&
-          Array.from({ length: 5 }).map((_, i) => (
-            <div
-              key={i}
-              className="bg-white border border-zinc-200 rounded-lg p-4 h-24 animate-pulse"
-            />
-          ))}
+          Array.from({ length: 5 }).map((_, i) => <SkeletonCard key={i} />)}
         {kpisQ.data?.blocks.map((b) => (
           <div
             key={b.label}

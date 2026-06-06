@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import type { Proposal, ProposalStatus } from "@/types/proposal";
 import { dateOnly } from "@/lib/format";
+import { showSuccess } from "@/lib/toast";
 import { useAuth } from "@/lib/auth";
 
 const STATUS_STYLES: Record<ProposalStatus, string> = {
@@ -47,8 +48,14 @@ export default function ProposalsPanel({ advertiserId }: Props) {
   const transition = useMutation({
     mutationFn: async ({ id, action }: { id: number; action: string }) =>
       (await api.post<Proposal>(`/proposals/${id}/${action}`)).data,
-    onSuccess: async () => {
+    onSuccess: async (_d, { action }) => {
       await qc.invalidateQueries({ queryKey: ["proposals", advertiserId] });
+      const map: Record<string, string> = {
+        approve: "Proposal approved",
+        reject: "Proposal rejected",
+        send: "Proposal sent",
+      };
+      showSuccess(map[action] ?? "Done");
     },
   });
 
@@ -63,6 +70,7 @@ export default function ProposalsPanel({ advertiserId }: Props) {
     onSuccess: async () => {
       await qc.invalidateQueries({ queryKey: ["proposals", advertiserId] });
       setEdit(null);
+      showSuccess("Edits saved");
     },
   });
 

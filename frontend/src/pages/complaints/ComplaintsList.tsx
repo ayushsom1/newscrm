@@ -4,6 +4,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { dateOnly } from "@/lib/format";
 import TriageBadge from "@/components/TriageBadge";
+import { SkeletonRows } from "@/components/Skeleton";
+import EmptyState from "@/components/EmptyState";
+import { MessageSquareWarning } from "lucide-react";
 import type { Complaint, ComplaintTriage, TriageResponse } from "@/types/complaint";
 import { useAuth } from "@/lib/auth";
 
@@ -52,8 +55,8 @@ export default function ComplaintsList() {
         </Link>
       </div>
 
-      <div className="bg-white border border-zinc-200 rounded-lg overflow-hidden">
-        <table className="w-full text-sm">
+      <div className="bg-white border border-zinc-200 rounded-lg overflow-x-auto">
+        <table className="w-full text-sm min-w-[780px]">
           <thead className="bg-zinc-50 text-ink/60 text-xs uppercase">
             <tr>
               <th className="text-left px-4 py-2 font-medium">Customer</th>
@@ -66,13 +69,7 @@ export default function ComplaintsList() {
             </tr>
           </thead>
           <tbody>
-            {isLoading && (
-              <tr>
-                <td colSpan={7} className="px-4 py-6 text-center text-ink/50">
-                  Loading…
-                </td>
-              </tr>
-            )}
+            {isLoading && <SkeletonRows rows={5} cols={7} />}
             {isError && (
               <tr>
                 <td colSpan={7} className="px-4 py-6 text-center text-brand">
@@ -80,10 +77,17 @@ export default function ComplaintsList() {
                 </td>
               </tr>
             )}
-            {data?.length === 0 && (
+            {!isLoading && data?.length === 0 && (
               <tr>
-                <td colSpan={7} className="px-4 py-6 text-center text-ink/50">
-                  No complaints yet.
+                <td colSpan={7}>
+                  <EmptyState
+                    inline
+                    icon={MessageSquareWarning}
+                    title="No complaints yet"
+                    description="Log subscriber complaints to see AI triage in action."
+                    actionLabel="Log a complaint"
+                    actionTo="/complaints/new"
+                  />
                 </td>
               </tr>
             )}

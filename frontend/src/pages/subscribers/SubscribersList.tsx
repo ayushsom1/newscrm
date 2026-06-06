@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import RenewalChip from "@/components/RenewalChip";
+import { SkeletonRows } from "@/components/Skeleton";
+import EmptyState from "@/components/EmptyState";
+import { Users } from "lucide-react";
 import type { Subscriber } from "@/types/subscriber";
 
 export default function SubscribersList() {
@@ -54,8 +57,8 @@ export default function SubscribersList() {
         </Link>
       </div>
 
-      <div className="bg-white border border-zinc-200 rounded-lg overflow-hidden">
-        <table className="w-full text-sm">
+      <div className="bg-white border border-zinc-200 rounded-lg overflow-x-auto">
+        <table className="w-full text-sm min-w-[680px]">
           <thead className="bg-zinc-50 text-ink/60 text-xs uppercase">
             <tr>
               <th className="text-left px-4 py-2 font-medium">Name</th>
@@ -67,11 +70,7 @@ export default function SubscribersList() {
             </tr>
           </thead>
           <tbody>
-            {isLoading && (
-              <tr>
-                <td colSpan={6} className="px-4 py-6 text-center text-ink/50">Loading…</td>
-              </tr>
-            )}
+            {isLoading && <SkeletonRows rows={6} cols={6} />}
             {isError && (
               <tr>
                 <td colSpan={6} className="px-4 py-6 text-center text-brand">
@@ -79,10 +78,17 @@ export default function SubscribersList() {
                 </td>
               </tr>
             )}
-            {data?.length === 0 && (
+            {!isLoading && data?.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-4 py-6 text-center text-ink/50">
-                  No subscribers yet.
+                <td colSpan={6}>
+                  <EmptyState
+                    inline
+                    icon={Users}
+                    title="No subscribers yet"
+                    description="Add subscribers to power the renewal engine and print-run forecast."
+                    actionLabel="Add a subscriber"
+                    actionTo="/subscribers/new"
+                  />
                 </td>
               </tr>
             )}

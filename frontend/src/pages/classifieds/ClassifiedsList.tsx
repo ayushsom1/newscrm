@@ -3,7 +3,11 @@ import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { dateOnly, money } from "@/lib/format";
+import { showSuccess } from "@/lib/toast";
 import StatusBadge from "@/components/StatusBadge";
+import { SkeletonRows } from "@/components/Skeleton";
+import EmptyState from "@/components/EmptyState";
+import { Newspaper } from "lucide-react";
 import type { Classified, ClassifiedStatus } from "@/types/classified";
 import { useAuth } from "@/lib/auth";
 
@@ -26,8 +30,15 @@ export default function ClassifiedsList() {
   const transition = useMutation({
     mutationFn: async ({ id, action }: { id: number; action: string }) =>
       await api.post(`/classifieds/${id}/${action}`),
-    onSuccess: async () => {
+    onSuccess: async (_data, { action }) => {
       await qc.invalidateQueries({ queryKey: ["classifieds"] });
+      const label =
+        action === "mark-paid"
+          ? "Marked as paid"
+          : action === "mark-published"
+            ? "Published"
+            : "Cancelled";
+      showSuccess(label);
     },
   });
 
@@ -53,8 +64,8 @@ export default function ClassifiedsList() {
         </Link>
       </div>
 
-      <div className="bg-white border border-zinc-200 rounded-lg overflow-hidden">
-        <table className="w-full text-sm">
+      <div className="bg-white border border-zinc-200 rounded-lg overflow-x-auto">
+        <table className="w-full text-sm min-w-[860px]">
           <thead className="bg-zinc-50 text-ink/60 text-xs uppercase">
             <tr>
               <th className="text-left px-4 py-2 font-medium">Customer</th>
@@ -69,9 +80,11 @@ export default function ClassifiedsList() {
           </thead>
           <tbody>
             {isLoading && (
-              <tr>
-                <td colSpan={8} className="px-4 py-6 text-center text-ink/50">Loading…</td>
-              </tr>
+              <SkeletonRows
+                rows={5}
+                cols={8}
+                align={["left", "left", "left", "right", "right", "left", "left", "right"]}
+              />
             )}
             {isError && (
               <tr>
@@ -80,10 +93,17 @@ export default function ClassifiedsList() {
                 </td>
               </tr>
             )}
-            {data?.length === 0 && (
+            {!isLoading && data?.length === 0 && (
               <tr>
-                <td colSpan={8} className="px-4 py-6 text-center text-ink/50">
-                  No classifieds yet.
+                <td colSpan={8}>
+                  <EmptyState
+                    inline
+                    icon={Newspaper}
+                    title="No classifieds yet"
+                    description="Book a classified to see it move through Quoted → Paid → Published."
+                    actionLabel="Book a classified"
+                    actionTo="/classifieds/new"
+                  />
                 </td>
               </tr>
             )}
