@@ -92,8 +92,6 @@ export default function ClassifiedNew() {
 
   return (
     <div className="max-w-5xl">
-      <h1 className="text-xl font-semibold text-ink mb-4">New classified</h1>
-
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <form
           onSubmit={handleSubmit((v) => book.mutate(v))}

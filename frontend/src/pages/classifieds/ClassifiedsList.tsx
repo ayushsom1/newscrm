@@ -33,32 +33,25 @@ export default function ClassifiedsList() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-end justify-between">
-        <div>
-          <h1 className="text-xl font-semibold text-ink">Classifieds</h1>
-          <p className="text-sm text-ink/60">
-            Quoted → paid → published. Price locked at booking.
-          </p>
-        </div>
+      <div className="flex items-center gap-2">
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value as ClassifiedStatus | "")}
+          className="border border-zinc-300 rounded px-3 py-1.5 text-sm"
+        >
+          <option value="">All statuses</option>
+          <option value="QUOTED">Quoted</option>
+          <option value="PAID">Paid</option>
+          <option value="PUBLISHED">Published</option>
+          <option value="CANCELLED">Cancelled</option>
+        </select>
         <Link
           to="/classifieds/new"
-          className="bg-ink text-white text-sm px-3 py-1.5 rounded hover:bg-ink/90"
+          className="ml-auto bg-ink text-white text-sm px-3 py-1.5 rounded hover:bg-ink/90"
         >
           + New classified
         </Link>
       </div>
-
-      <select
-        value={statusFilter}
-        onChange={(e) => setStatusFilter(e.target.value as ClassifiedStatus | "")}
-        className="border border-zinc-300 rounded px-3 py-1.5 text-sm"
-      >
-        <option value="">All statuses</option>
-        <option value="QUOTED">Quoted</option>
-        <option value="PAID">Paid</option>
-        <option value="PUBLISHED">Published</option>
-        <option value="CANCELLED">Cancelled</option>
-      </select>
 
       <div className="bg-white border border-zinc-200 rounded-lg overflow-hidden">
         <table className="w-full text-sm">

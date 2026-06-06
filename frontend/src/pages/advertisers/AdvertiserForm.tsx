@@ -98,9 +98,6 @@ export default function AdvertiserForm() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold text-ink mb-4">
-        {isEdit ? "Edit advertiser" : "New advertiser"}
-      </h1>
       <form onSubmit={submit} className="bg-white border border-zinc-200 rounded-lg p-6 space-y-4">
         <Field label="Name" error={errors.name?.message}>
           <input {...register("name")} className={input} />

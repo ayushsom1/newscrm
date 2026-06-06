@@ -23,25 +23,12 @@ export default function AdvertiserList() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-end justify-between">
-        <div>
-          <h1 className="text-xl font-semibold text-ink">Advertisers</h1>
-          <p className="text-sm text-ink/60">Churn band is computed by the engine.</p>
-        </div>
-        <Link
-          to="/advertisers/new"
-          className="bg-ink text-white text-sm px-3 py-1.5 rounded hover:bg-ink/90"
-        >
-          + New advertiser
-        </Link>
-      </div>
-
       <div className="flex items-center gap-2">
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Search name or category…"
-          className="flex-1 max-w-sm border border-zinc-300 rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ai/40"
+          className="max-w-sm flex-1 border border-zinc-300 rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ai/40"
         />
         <select
           value={band}
@@ -53,6 +40,12 @@ export default function AdvertiserList() {
           <option value="med">Medium</option>
           <option value="high">High</option>
         </select>
+        <Link
+          to="/advertisers/new"
+          className="ml-auto bg-ink text-white text-sm px-3 py-1.5 rounded hover:bg-ink/90"
+        >
+          + New advertiser
+        </Link>
       </div>
 
       <div className="bg-white border border-zinc-200 rounded-lg overflow-hidden">

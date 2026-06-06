@@ -144,20 +144,13 @@ export default function Assistant() {
       </aside>
 
       <section className="bg-white border border-zinc-200 rounded-lg flex flex-col min-h-0">
-        <header className="px-4 py-3 border-b border-zinc-200 flex items-center justify-between">
-          <div>
-            <h1 className="text-base font-semibold text-ink">Assistant</h1>
-            <p className="text-xs text-ink/60">
-              Grounded on a read-only CRM snapshot. The assistant can propose
-              actions; humans approve before anything runs.
-            </p>
-          </div>
-          {detailQuery.data?.model_used && (
-            <span className="text-[10px] text-ink/50 border border-zinc-200 rounded px-1.5 py-0.5">
+        {detailQuery.data?.model_used && (
+          <header className="px-4 py-2 border-b border-zinc-200 flex items-center justify-end">
+            <span className="text-[10px] uppercase tracking-wide text-ink/50 border border-zinc-200 rounded px-1.5 py-0.5">
               {detailQuery.data.model_used}
             </span>
-          )}
-        </header>
+          </header>
+        )}
 
         <div ref={scrollerRef} className="flex-1 overflow-y-auto p-4 space-y-3">
           {activeId === null && messages.length === 0 && (
