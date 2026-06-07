@@ -76,9 +76,9 @@ export default function SubscriberDetail() {
 
   return (
     <div className="space-y-6 max-w-4xl">
-      <div className="flex items-start justify-between">
-        <div>
-          <div className="flex items-center gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
+          <div className="flex items-center gap-3 flex-wrap">
             <h1 className="text-xl font-semibold text-ink">{data.name}</h1>
             <RenewalChip
               severity={data.renewal.severity}
@@ -90,7 +90,7 @@ export default function SubscriberDetail() {
             {data.area} · {data.plan}
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           {canWrite && (
             <Link
               to={`/subscribers/${data.id}/edit`}

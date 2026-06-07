@@ -36,10 +36,10 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-zinc-50 font-sans">
+    <div className="min-h-screen flex items-center justify-center bg-zinc-50 font-sans p-4">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-full max-w-sm bg-white border border-zinc-200 rounded-lg p-8 space-y-5 shadow-sm"
+        className="w-full max-w-sm bg-white border border-zinc-200 rounded-lg p-6 sm:p-8 space-y-5 shadow-sm"
       >
         <div>
           <h1 className="text-2xl font-semibold text-ink">News CRM</h1>

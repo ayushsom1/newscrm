@@ -52,9 +52,9 @@ export default function ComplaintDetail() {
 
   return (
     <div className="space-y-6 max-w-3xl">
-      <div className="flex items-start justify-between">
-        <div>
-          <div className="flex items-center gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
+          <div className="flex items-center gap-3 flex-wrap">
             <h1 className="text-xl font-semibold text-ink">{data.subscriber_name}</h1>
             <TriageBadge triage={data.triage} source={data.triage_source} />
             <span className="text-xs text-ink/50">{data.status}</span>
