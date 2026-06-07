@@ -115,7 +115,7 @@ export default function ClassifiedNew() {
             </p>
           </Field>
 
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <Field label="Category">
               <select {...register("category")} className={input}>
                 {CATEGORIES.map((c) => (

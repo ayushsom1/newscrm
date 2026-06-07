@@ -82,14 +82,14 @@ export default function Dashboard() {
 
       {/* Exception queue */}
       <div className="bg-white border border-zinc-200 rounded-lg">
-        <div className="px-4 py-3 border-b border-zinc-200 flex items-center justify-between">
+        <div className="px-4 py-3 border-b border-zinc-200 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <div className="text-sm font-medium text-ink">Exception queue</div>
             <div className="text-xs text-ink/60">
               Derived live from the CRM. Click any row to jump to it.
             </div>
           </div>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 flex-wrap">
             {(["ALL", "HUMAN", "APPROVE", "AUTO"] as const).map((t) => {
               const count =
                 t === "ALL"

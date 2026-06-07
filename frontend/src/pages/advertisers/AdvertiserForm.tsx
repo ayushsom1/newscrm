@@ -104,7 +104,7 @@ export default function AdvertiserForm() {
         <Field label="Name" error={errors.name?.message}>
           <input {...register("name")} className={input} />
         </Field>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Field label="Category">
             <input {...register("category")} className={input} placeholder="Auto, FMCG, Real estate…" />
           </Field>
@@ -117,7 +117,7 @@ export default function AdvertiserForm() {
           </Field>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Field label="Contact name">
             <input {...register("contact_name")} className={input} />
           </Field>
@@ -129,7 +129,7 @@ export default function AdvertiserForm() {
           <input {...register("contact_email")} className={input} />
         </Field>
 
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <Field label={`Annual value (${currency})`} error={errors.annual_value?.message}>
             <input type="number" step="0.01" {...register("annual_value")} className={input} />
           </Field>

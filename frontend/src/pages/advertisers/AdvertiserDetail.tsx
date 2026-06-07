@@ -77,16 +77,16 @@ export default function AdvertiserDetail() {
 
   return (
     <div className="space-y-6 max-w-4xl">
-      <div className="flex items-start justify-between">
-        <div>
-          <div className="flex items-center gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
+          <div className="flex items-center gap-3 flex-wrap">
             <h1 className="text-xl font-semibold text-ink">{data.name}</h1>
             <ChurnChip band={data.churn.band} score={data.churn.score} />
             <span className="text-xs text-ink/50">{data.status}</span>
           </div>
           <p className="text-sm text-ink/60">{data.category ?? "Uncategorised"}</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           {canWrite && (
             <Link
               to={`/advertisers/${data.id}/edit`}

@@ -90,7 +90,7 @@ export default function SubscriberForm() {
         onSubmit={handleSubmit((v) => save.mutate(v))}
         className="bg-white border border-zinc-200 rounded-lg p-6 space-y-4"
       >
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Field label="Name" error={errors.name?.message}>
             <input {...register("name")} className={input} />
           </Field>
@@ -98,7 +98,7 @@ export default function SubscriberForm() {
             <input {...register("phone")} className={input} />
           </Field>
         </div>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Field label="Area" error={errors.area?.message}>
             <input {...register("area")} className={input} placeholder="e.g. Patan" />
           </Field>
@@ -106,7 +106,7 @@ export default function SubscriberForm() {
             <input {...register("address")} className={input} />
           </Field>
         </div>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <Field label="Plan">
             <select {...register("plan")} className={input}>
               {PLANS.map((p) => (
